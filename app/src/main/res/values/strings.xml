@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FoodPlanner</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <string name="lottiesplash">lottiesplash2</string>
+    <string name="my_account">My Account</string>
+    <string name="client_id">634967741320-9cv9j9un9bubrq82htnsflhs8f1c1tlk.apps.googleusercontent.com</string>
 </resources>

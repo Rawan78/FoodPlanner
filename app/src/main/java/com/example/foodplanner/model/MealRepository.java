@@ -5,15 +5,24 @@ import com.example.foodplanner.network.*;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+
 public interface MealRepository {
-    LiveData<List<Meal>> getStoredMeals();
+    Flowable<List<Meal>> getStoredMeals();
 
-    void insertMeal(Meal meal);
+    Completable insertMeal(Meal meal);
 
-    void deleteMeal(Meal meal);
-    void getAllMeals (NetworkCallback networkCallback);
-    void getAllCategoryMeals (String categoryName,NetworkCallback networkCallback);
-    void getAllCategories (NetworkCallback networkCallback);
-    void getAllAreas (NetworkCallback networkCallback);
+    Completable deleteMeal(Meal meal);
+    public Observable<MealResponse> getAllMeals ();
+    public Observable<MealResponse> getAllCategoryMeals (String categoryName);
+    public Observable<MealResponse> getAllAreaMeals (String areaName);
+    public Observable<MealResponse> getMealsByIngredients (String ingredientName);
+    public Observable<CategoryResponse> getAllCategories ();
+    public Observable<AreaResponse> getAllAreas ();
+
+//    Completable insertAllMealsFromFirebase(List<Meal> meals);
+//    Completable deleteAllMeals();
 
 }

@@ -20,7 +20,6 @@ import com.example.foodplanner.model.Meal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
     private static final String TAG = "SearchAdapter";
@@ -38,34 +37,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         this.listener = listener;
         mealList=new ArrayList<>();
     }
-//    public void setMeal(List<Meal> meals) {
-//        this.meals = meals;
-//        notifyDataSetChanged();
-//    }
-public void setList(List<Meal> updateMeals){
-    this.meals=updateMeals;
-    mealList.addAll(updateMeals);
-    // notifyDataSetChanged();
 
-}
+    public void setList(List<Meal> updateMeals){
+        this.meals=updateMeals;
+        mealList.addAll(updateMeals);
+    }
     public Filter getFilter() {
         return filter;
     }
 
-//    public void filter(String searchText) {
-//        filteredMeals.clear();
-//        if (searchText.isEmpty()) {
-//            filteredMeals.addAll(meals); // If search text is empty, show all meals
-//        } else {
-//            searchText = searchText.toLowerCase(Locale.getDefault());
-//            for (Meal meal : meals) {
-//                if (meal.getStrMeal().toLowerCase(Locale.getDefault()).contains(searchText)) {
-//                    filteredMeals.add(meal);
-//                }
-//            }
-//        }
-//        notifyDataSetChanged();
-//    }
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -114,15 +94,9 @@ public void setList(List<Meal> updateMeals){
             public void onClick(View v) {
                 // Toggle between two icons
                 onFavMealClick.onFavMealClick(current);
-                //if (holder.addToFavIcon.getTag() != null && holder.addToFavIcon.getTag().equals("favorite")) {
                 holder.addToFavIcon.setImageResource(R.drawable.redhearticon);
                 holder.addToFavIcon.setTag("not_favorite");
-                // Handle removing from favorites here
-                // } else {
-                //    holder.addToFavIcon.setImageResource(R.drawable.addtofavicon);
-                //    holder.addToFavIcon.setTag("favorite");
-                // Handle adding to favorites here
-                //}
+
                 Toast.makeText(context, "Added To Favourite", Toast.LENGTH_SHORT).show();
             }
         });

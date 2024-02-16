@@ -39,8 +39,16 @@ public class SearchFragment extends Fragment {
             chip.setCheckable(true);
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked && category.equals("Search By Meal Name")) {
-                    // If "Search By Meal Name" chip is checked, start SearchActivity
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    startActivity(intent);
+                }else if(isChecked && category.equals("Search By Category")){
+                    Intent intent = new Intent(getActivity(), SearchByCategoryActivity.class);
+                    startActivity(intent);
+                }else if(isChecked && category.equals("Search By Area")){
+                    Intent intent = new Intent(getActivity(), SearchByAreaActivity.class);
+                    startActivity(intent);
+                }else if(isChecked && category.equals("Search By Ingredients")){
+                    Intent intent = new Intent(getActivity(), SearchMealsByIngredientActivity.class);
                     startActivity(intent);
                 }
             });

@@ -32,7 +32,7 @@ public class MealsByAreaActivity extends AppCompatActivity implements OnFavourit
     LinearLayoutManager linearLayoutManager;
     MealsByAreaAdapter mealsByAreaAdapter;
     AllMealsPresenter allMealsPresenter;
-    static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
+    //static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
     private static final String TAG = "MealsByAreaActivity";
     public static String areaName;
 
@@ -47,7 +47,10 @@ public class MealsByAreaActivity extends AppCompatActivity implements OnFavourit
         recyclerViewMealsByArea.setLayoutManager(linearLayoutManager);
 
         // Retrieve category name from intent extras
-        areaName = getIntent().getStringExtra("areaName");
+        Bundle extra=getIntent().getExtras();
+        if(extra!=null){
+            areaName= extra.getString("areaName");
+        }
 
         //Adapter
         mealsByAreaAdapter = new MealsByAreaAdapter(this, new ArrayList<>() , this);
@@ -56,7 +59,7 @@ public class MealsByAreaActivity extends AppCompatActivity implements OnFavourit
         //Presenter
         allMealsPresenter = new AllMealsPresenterImpl(this , MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance() ,
                 MealLocalDataSourceImpl.getInstance(this)));
-        allMealsPresenter.getAreas();
+        allMealsPresenter.getAreaMeals(areaName);
 
 //        Retrofit retrofit = new Retrofit.Builder()
 //                .addConverterFactory(GsonConverterFactory.create())

@@ -8,10 +8,13 @@ import com.example.foodplanner.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 public class MealLocalDataSourceImpl implements MealLocalDataSource{
     private Context context;
     private MealDAO mealsDAO;
-    private LiveData<List<Meal>> storedMeals;
+    private Flowable<List<Meal>> storedMeals;
     private static MealLocalDataSourceImpl repo = null;
 
     public MealLocalDataSourceImpl(Context context) {
@@ -28,27 +31,39 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource{
     }
 
     @Override
-    public void insertMeal(Meal meal) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mealsDAO.insertMeal(meal);
-            }
-        }).start();
+    public Completable insertMeal(Meal meal) {
+        return mealsDAO.insertMeal(meal);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mealsDAO.insertMeal(meal);
+//            }
+//        }).start();
     }
 
     @Override
-    public void deleteMeal(Meal meal) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mealsDAO.deleteMeal(meal);
-            }
-        }).start();
+    public Completable deleteMeal(Meal meal) {
+        return mealsDAO.deleteMeal(meal);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mealsDAO.deleteMeal(meal);
+//            }
+//        }).start();
     }
 
     @Override
-    public LiveData<List<Meal>> getAllStoredMeals() {
-        return storedMeals;
+    public Flowable<List<Meal>> getAllStoredMeals() {
+        return mealsDAO.getAllMeals();
     }
+
+//    @Override
+//    public Completable deleteAllMeals() {
+//        return mealsDAO.deleteAllMealsFromROOM();
+//    }
+//
+//    @Override
+//    public Completable insertAllMeals(List<Meal> meals) {
+//        return mealsDAO.insertMealsFromFirebase(meals);
+//    }
 }

@@ -508,4 +508,5 @@ public class Meal implements Serializable {
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
     }
+
 }

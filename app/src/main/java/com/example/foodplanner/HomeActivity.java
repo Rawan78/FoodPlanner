@@ -12,12 +12,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+    GoogleSignInOptions googleSignInOptions;
+    GoogleSignInClient googleSignInClient;
+    GoogleSignInAccount account;
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     SearchFragment searchFragment = new SearchFragment();
@@ -32,6 +41,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
+
+        account = GoogleSignIn.getLastSignedInAccount(this);
+
 
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
@@ -55,6 +71,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_logout) {
                     Toast.makeText(HomeActivity.this, "Clicked To Logout", Toast.LENGTH_SHORT).show();
+
+                    signOut();
+
                     FirebaseAuth.getInstance().signOut();
                     sharedPreferences.edit().clear().apply();
                     Toast.makeText(HomeActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
@@ -67,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                     Toast.makeText(HomeActivity.this, "Clicked To Favourite", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomeActivity.this, FavouriteMealActivity.class);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
                 return false;
             }
@@ -92,6 +111,15 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         } else {
             // Handle case where user is not signed in
             Log.e(TAG, "User is not signed in");
+        }
+        if(account != null){
+            String personNameOfGoogle = account.getDisplayName();
+            String personEmailOfGoogle = account.getEmail();
+            if (personEmailOfGoogle != null) {
+                navigationView.getMenu().findItem(R.id.nav_account).setTitle(personEmailOfGoogle);
+            } else {
+                Log.e(TAG, "Google account email is null");
+            }
         }
     }
     @Override
@@ -125,5 +153,18 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
         return false;
+    }
+
+    //Sign out From Google Account
+    public void signOut(){
+        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+//                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+//                intent.putExtra("navigate_to_login_fragment", true);
+//                startActivity(intent);
+//                finish();
+            }
+        });
     }
 }

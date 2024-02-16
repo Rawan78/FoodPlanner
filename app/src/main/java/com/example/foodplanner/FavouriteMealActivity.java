@@ -2,6 +2,7 @@ package com.example.foodplanner;
 
 import com.example.foodplanner.model.*;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -9,12 +10,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodplanner.db.*;
 import com.example.foodplanner.network.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavouriteMealActivity extends AppCompatActivity implements OnFavouriteClickListener, FavMealsView{
     RecyclerView recyclerViewForFavouriteMeals;
@@ -42,22 +54,17 @@ public class FavouriteMealActivity extends AppCompatActivity implements OnFavour
                         MealLocalDataSourceImpl.getInstance(this)));
 
         recyclerViewForFavouriteMeals.setAdapter(favouriteMealsAdapter);
-
-        favouriteMealPresenter.getMeals();
-
-        mealLocalDataSource.getAllStoredMeals().observe(this, new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> meals) {
-                favouriteMealsAdapter.setMeal(meals);
-            }
-        });
+        showData();
     }
 
     @Override
-    public void showData(List<Meal> meals) {
-        favouriteMealsAdapter.setMeal(meals);
-        favouriteMealsAdapter.notifyDataSetChanged();
-        Toast.makeText(this, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
+    public void showData() {
+        Flowable<List<Meal>> myFavProducts = favouriteMealPresenter.getMeals();
+        myFavProducts.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(meals -> {
+                    favouriteMealsAdapter.setMeal(meals);
+                });
     }
 
     @Override
@@ -71,10 +78,11 @@ public class FavouriteMealActivity extends AppCompatActivity implements OnFavour
     @Override
     public void removeMeal(Meal meal) {
         favouriteMealPresenter.removeFromFav(meal);
+        removeMealFromFirebase(meal);
     }
 
     @Override
-    public void showCategories(List<Category> categories) {
+    public void showCategories() {
 
     }
 
@@ -87,5 +95,28 @@ public class FavouriteMealActivity extends AppCompatActivity implements OnFavour
     @Override
     public void onClickMealForDetails(Meal meal) {
 
+    }
+
+    public void removeMealFromFirebase(Meal meal){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+
+            FirebaseDatabase.getInstance().getReference("users")
+                    .child(userId)
+                    .child("favorites")
+                    .child(meal.getIdMeal())
+                    .removeValue()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Meal removed from Firebase successfully");
+                            } else {
+                                Log.e(TAG, "Failed to remove meal from Firebase: " + task.getException().getMessage());
+                            }
+                        }
+                    });
+        }
     }
 }

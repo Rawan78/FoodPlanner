@@ -195,7 +195,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToPlanBtn"
+            android:layout_width="208dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="101dp"
 
+            android:layout_marginEnd="102dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="#3F51B5"
+            android:text="Add To Plan"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            app:iconGravity="start" />
 
 
     </LinearLayout>

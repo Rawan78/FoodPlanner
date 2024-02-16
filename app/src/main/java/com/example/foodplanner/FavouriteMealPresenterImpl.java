@@ -1,15 +1,22 @@
 package com.example.foodplanner;
 
+import android.util.Log;
+
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.model.*;
 import com.example.foodplanner.network.*;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FavouriteMealPresenterImpl implements FavouriteMealPresenter, NetworkCallback{
+
+public class FavouriteMealPresenterImpl implements FavouriteMealPresenter{
     private FavMealsView _view;
     private MealRepository _repo;
+    private static final String TAG = "FavouriteMealPresenterI";
 
     public FavouriteMealPresenterImpl(FavMealsView _view, MealRepository _repo) {
         this._view = _view;
@@ -17,37 +24,20 @@ public class FavouriteMealPresenterImpl implements FavouriteMealPresenter, Netwo
     }
 
     @Override
-    public void getMeals() {
-        _repo.getStoredMeals();
+    public Flowable<List<Meal>> getMeals() {
+        return _repo.getStoredMeals();
     }
 
     @Override
     public void removeFromFav(Meal meal) {
-        _repo.deleteMeal(meal);
+        _repo.deleteMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    Log.i(TAG, "addToFav: Successfully Insert");
+                },error->{
+                    Log.i(TAG, "addToFav: Failed To Insert");
+                });
     }
 
-    @Override
-    public void onRandomSuccessfullResult(List<Meal> meals) {
-        _view.showData(meals);
-    }
-
-    @Override
-    public void onRandomFailure(String errMsg) {
-        _view.showErrMsg(errMsg);
-    }
-
-    @Override
-    public void onCategorySuccessfullResult(List<Category> categories) {
-
-    }
-
-    @Override
-    public void onAreaSuccessfullResult(List<Area> meals) {
-
-    }
-
-    @Override
-    public void onMealsAreaSuccessfullResult(List<Meal> meals) {
-        _view.showData(meals);
-    }
 }

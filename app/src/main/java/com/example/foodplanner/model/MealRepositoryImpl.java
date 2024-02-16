@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.db.*;
 
-import com.example.foodplanner.network.NetworkCallback;
 import com.example.foodplanner.network.*;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 
 public class MealRepositoryImpl implements MealRepository{
     MealRemoteDataSource mealRemoteDataSource;
@@ -27,37 +30,58 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
-    public LiveData<List<Meal>> getStoredMeals() {
+    public Flowable<List<Meal>> getStoredMeals() {
         return mealLocalDataSource.getAllStoredMeals();
     }
 
     @Override
-    public void insertMeal(Meal meal) {
-        mealLocalDataSource.insertMeal(meal);
+    public Completable insertMeal(Meal meal) {
+        return mealLocalDataSource.insertMeal(meal);
     }
 
     @Override
-    public void deleteMeal(Meal meal) {
-        mealLocalDataSource.deleteMeal(meal);
+    public Completable deleteMeal(Meal meal) {
+        return mealLocalDataSource.deleteMeal(meal);
     }
 
     @Override
-    public void getAllMeals(NetworkCallback networkCallback) {
-        mealRemoteDataSource.networkMethod(networkCallback);
+    public Observable<MealResponse> getAllMeals() {
+        return mealRemoteDataSource.networkMethod();
     }
 
     @Override
-    public void getAllCategoryMeals(String categoryName, NetworkCallback networkCallback) {
-        mealRemoteDataSource.networkMethodForCategories(networkCallback);
+    public Observable<MealResponse> getAllCategoryMeals(String categoryName) {
+       return mealRemoteDataSource.networkMethodForCategoryMeals(categoryName);
     }
 
     @Override
-    public void getAllCategories(NetworkCallback networkCallback) {
-        mealRemoteDataSource.networkMethodForCategories(networkCallback);
+    public Observable<MealResponse> getAllAreaMeals(String areaName) {
+        return mealRemoteDataSource.networkMethodForMealsByAreas(areaName);
     }
 
     @Override
-    public void getAllAreas(NetworkCallback networkCallback) {
-        mealRemoteDataSource.networkMethodForAreas(networkCallback);
+    public Observable<MealResponse> getMealsByIngredients(String ingredientName) {
+        return mealRemoteDataSource.networkMethodForMealsByIngredients(ingredientName);
     }
+
+    @Override
+    public Observable<CategoryResponse> getAllCategories( ) {
+        return mealRemoteDataSource.networkMethodForCategories();
+    }
+
+    @Override
+    public Observable<AreaResponse> getAllAreas() {
+        return mealRemoteDataSource.networkMethodForAreas();
+    }
+
+//    @Override
+//    public Completable deleteAllMeals() {
+//        return mealLocalDataSource.deleteAllMeals();
+//    }
+//
+//    @Override
+//    public Completable insertAllMeals(List<Meal> meals) {
+//        return mealLocalDataSource.insertAllMeals(meals);
+//    }
+
 }

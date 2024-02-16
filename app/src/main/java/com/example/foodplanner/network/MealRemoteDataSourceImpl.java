@@ -1,22 +1,12 @@
 package com.example.foodplanner.network;
 
-import android.util.Log;
-import android.widget.Toast;
-import com.example.foodplanner.*;
-
-import com.example.foodplanner.AreaAdapter;
-import com.example.foodplanner.CategoriesAdapter;
-import com.example.foodplanner.CategoryAdapter;
-import com.example.foodplanner.MealsOfCategoryActivity;
 import com.example.foodplanner.model.AreaResponse;
 import com.example.foodplanner.model.CategoryResponse;
 import com.example.foodplanner.model.MealResponse;
-import android.content.Context;
-import android.content.SharedPreferences;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -34,6 +24,7 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource{
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .baseUrl(BASE_URL).build();
 
         //For Random Meals In Home
@@ -60,105 +51,39 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource{
     }
 
     @Override
-    public void networkMethod(NetworkCallback networkCallback) {
-        myRandomMealsService.getRandomMeals().enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                networkCallback.onRandomSuccessfullResult(response.body().meals);
-                if(response.isSuccessful()){
-                    Log.i(TAG, "onResponse: " + response.body());
-                }
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                Log.i(TAG, "onFailure: " + t.getMessage());
-                networkCallback.onRandomFailure(t.getMessage());
-            }
-        });
-    }
-
-
-    //For Meals of Category
-    // Retrieve category name from intent
-    @Override
-    public void networkMethodForCategoryMeals(String categoryName,NetworkCallback networkCallback) {
-        myCategoryMealsService.getCategoryMeals(categoryName).enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                networkCallback.onRandomSuccessfullResult(response.body().meals);
-                if(response.isSuccessful()){
-                    Log.i(TAG, "onResponse: " + response.body());
-                    //Toast.makeText(MealsOfCategoryActivity.this, "Downloaded Successfully" + response.body().meals.size(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                Log.i(TAG, "onFailure: " + t.getMessage());
-                networkCallback.onRandomFailure(t.getMessage());
-                //Toast.makeText(MealsOfCategoryActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public Observable<MealResponse> networkMethod() {
+        return myRandomMealsService.getRandomMeals()
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public void networkMethodForCategories(NetworkCallback networkCallback) {
-        myCategoryService.getCategories().enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                networkCallback.onCategorySuccessfullResult(response.body().categories);
-                if (response.isSuccessful()) {
-                    Log.i(TAG, "onResponse: " + response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                Log.i(TAG, "onFailure: " + t.getMessage());
-                networkCallback.onRandomFailure(t.getMessage());
-            }
-        });
+    public Observable<MealResponse> networkMethodForCategoryMeals(String categoryName) {
+        return myCategoryMealsService.getCategoryMeals(categoryName)
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public void networkMethodForAreas(NetworkCallback networkCallback) {
-        myAreaService.getAreas().enqueue(new Callback<AreaResponse>() {
-            @Override
-            public void onResponse(Call<AreaResponse> call, Response<AreaResponse> response) {
+    public Observable<CategoryResponse> networkMethodForCategories() {
+        return myCategoryService.getCategories()
+                .subscribeOn(Schedulers.io());
 
-                networkCallback.onAreaSuccessfullResult(response.body().meals);
-                if (response.isSuccessful()) {
-                    Log.i(TAG, "onResponse: " + response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AreaResponse> call, Throwable t) {
-                networkCallback.onRandomFailure(t.getMessage());
-                Log.i(TAG, "onFailure: " + t.getMessage());
-            }
-        });
     }
 
     @Override
-    public void networkMethodForMealsByAreas(NetworkCallback networkCallback) {
-        String areaName = MealsByAreaActivity.areaName;
-        myAreaMealsService.getAreaMeals(areaName).enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                networkCallback.onRandomSuccessfullResult(response.body().meals);
-
-                if(response.isSuccessful()){
-                    Log.i(TAG, "onResponse: " + response.body());
-                    // Toast.makeText(CategoriesActivity.this, "Downloaded Successfully" + response.body().products.size(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                networkCallback.onRandomFailure(t.getMessage());
-                Log.i(TAG, "onFailure: " + t.getMessage());
-                //Toast.makeText(MealsByAreaActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public Observable<AreaResponse> networkMethodForAreas() {
+        return myAreaService.getAreas()
+                .subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<MealResponse> networkMethodForMealsByAreas(String areaName) {
+        return myAreaMealsService.getAreaMeals(areaName)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<MealResponse> networkMethodForMealsByIngredients(String ingredientName) {
+        return myAreaMealsService.getAreaMeals(ingredientName)
+                .subscribeOn(Schedulers.io());
+    }
 }

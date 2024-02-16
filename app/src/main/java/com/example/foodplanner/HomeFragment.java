@@ -2,6 +2,7 @@ package com.example.foodplanner;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,9 +24,18 @@ import com.example.foodplanner.model.CategoryResponse;
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.model.MealResponse;
 import com.example.foodplanner.network.MealService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -112,6 +122,7 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener ,
     @Override
     public void onFavMealClick(Meal meal) {
         addMeal(meal);
+        checkIfMealExistsInFavorites(meal);
     }
 
     @Override
@@ -129,7 +140,7 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener ,
     @Override
     public void showErrMsg(String error) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(error).setTitle("An Error Occured");
+        builder.setMessage(error).setTitle("An Error Occurred");
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -151,5 +162,57 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener ,
         areaAdapter.setArea(areas);
         areaAdapter.notifyDataSetChanged();
         //Toast.makeText(getActivity(), "Categories Downloaded Successfully" + areas.size(), Toast.LENGTH_SHORT).show();
+    }
+    private void checkIfMealExistsInFavorites(Meal meal) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("favorites");
+
+            favoritesRef.orderByChild("name").equalTo(meal.getStrMeal()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(getContext(), "Meal already added to favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        addMealToFirebase(meal);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e(TAG, "Error checking if meal exists in favorites", databaseError.toException());
+                    Toast.makeText(getContext(), "Failed to check if meal exists in favorites", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void addMealToFirebase(Meal meal) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            String mealId = meal.getIdMeal(); // Assuming getIdMeal() returns the mealId
+
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("favorites")
+                    .child(mealId); // Use mealId as the key
+
+            // Map the meal object directly to the database
+            favoritesRef.setValue(meal)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Meal added to favorites");
+                        Toast.makeText(getContext(), "Added To Favourite", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Error adding meal to favorites", e);
+                        Toast.makeText(getContext(), "Failed to add to Favourite", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 }

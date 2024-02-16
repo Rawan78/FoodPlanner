@@ -4,53 +4,50 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodplanner.db.MealLocalDataSourceImpl;
-import com.example.foodplanner.network.*;
-import com.example.foodplanner.model.*;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
-import com.example.foodplanner.model.Area;
-import com.example.foodplanner.model.Category;
+import com.example.foodplanner.db.MealLocalDataSourceImpl;
+import com.example.foodplanner.model.*;
+
 import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.network.MealRemoteDataSourceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements AllMealsView , OnFavouriteClickListener{
-    EditText editText_SearchByName;
-    RecyclerView recyclerView_SearchByName;
+public class SearchByAreaActivity extends AppCompatActivity implements AllMealsView , OnFavouriteClickListener{
+    private static final String TAG = "SearchByAreaActivity";
+    SearchByAreaAdapter searchByAreaAdapter;
+    EditText editText_SearchByArea;
+    RecyclerView recyclerView_SearchByArea;
     LinearLayoutManager linearLayoutManager;
-    SearchAdapter searchAdapter;
     AllMealsPresenter allMealsPresenter;
-    List<Meal> meals;
-
+    List<Area> areas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search_by_area);
 
-        editText_SearchByName = findViewById(R.id.et_search_by_name);
-        recyclerView_SearchByName = findViewById(R.id.recyclerView_search_by_name);
+        editText_SearchByArea = findViewById(R.id.et_search_by_area);
+        recyclerView_SearchByArea = findViewById(R.id.recyclerView_search_by_area);
 
-        searchAdapter = new SearchAdapter(this, new ArrayList<>(), this);
-        recyclerView_SearchByName.setAdapter(searchAdapter);
+        searchByAreaAdapter = new SearchByAreaAdapter(this, new ArrayList<>(), this);
+        recyclerView_SearchByArea.setAdapter(searchByAreaAdapter);
         linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView_SearchByName.setLayoutManager(linearLayoutManager);
+        recyclerView_SearchByArea.setLayoutManager(linearLayoutManager);
 
         //Presenter
         allMealsPresenter = new AllMealsPresenterImpl(this , MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance() ,
                 MealLocalDataSourceImpl.getInstance(this)));
-        allMealsPresenter.getMeals();
+        allMealsPresenter.getAreas();
 
-        editText_SearchByName.addTextChangedListener(new TextWatcher() {
+        editText_SearchByArea.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                  //Log.i(TAG, "beforeTextChanged: ");
+                //Log.i(TAG, "beforeTextChanged: ");
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -59,15 +56,14 @@ public class SearchActivity extends AppCompatActivity implements AllMealsView , 
             @Override
             public void afterTextChanged(Editable s) {
                 //  Log.i(TAG, "afterTextChanged: ");
-                searchAdapter.getFilter().filter(s);
+                searchByAreaAdapter.getFilter().filter(s);
             }
         });
     }
 
     @Override
     public void showData(List<Meal> meals) {
-        searchAdapter.setList(meals);
-        searchAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -82,12 +78,13 @@ public class SearchActivity extends AppCompatActivity implements AllMealsView , 
 
     @Override
     public void showCategories(List<Category> categories) {
-        //No Need For This
+
     }
 
     @Override
     public void showAreas(List<Area> areas) {
-        //No Need For This
+        searchByAreaAdapter.setList(areas);
+        searchByAreaAdapter.notifyDataSetChanged();
     }
 
     @Override

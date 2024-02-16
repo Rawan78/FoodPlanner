@@ -33,6 +33,7 @@ public class LoginFragment extends Fragment {
     ProgressBar progBar;
     CheckBox cb_rememberMe;
     SharedPreferences preferences;
+    AllMealsPresenter allMealsPresenter;
     static final String PREFRENCE_FILE = "PREFRENCE_FILE";
     private static final String TAG = "LoginFragment";
 
@@ -51,6 +52,8 @@ public class LoginFragment extends Fragment {
         boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
         if (isLoggedIn) {
             // If user is already logged in, navigate to HomeActivity
+//            String userId = mAuth.getCurrentUser().getUid();
+//            allMealsPresenter.getFavouriteMealsFromFirebase(userId);
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();

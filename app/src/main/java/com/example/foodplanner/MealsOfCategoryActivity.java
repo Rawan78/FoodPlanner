@@ -30,11 +30,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MealsOfCategoryActivity extends AppCompatActivity implements OnFavouriteClickListener , AllMealsView , NetworkCallback{
+public class MealsOfCategoryActivity extends AppCompatActivity implements OnFavouriteClickListener , AllMealsView {
     RecyclerView recyclerViewMealsByCategory;
     LinearLayoutManager linearLayoutManager;
     CategoriesAdapter categoriesAdapter;
     AllMealsPresenter allMealsPresenter;
+    String categoryName;
     private static final String TAG = "RetrofitMainActivity";
     private static final String PREF_NAME = "MyPrefs";
     private static final String KEY_CATEGORY_NAME = "categoryName";
@@ -48,7 +49,10 @@ public class MealsOfCategoryActivity extends AppCompatActivity implements OnFavo
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewMealsByCategory.setLayoutManager(linearLayoutManager);
 
-        String categoryName = getIntent().getStringExtra("categoryName");
+        Bundle extra=getIntent().getExtras();
+        if(extra!=null){
+            categoryName= extra.getString("categoryName");
+        }
 
         //Adapter
         categoriesAdapter = new CategoriesAdapter(this, new ArrayList<>() , this);
@@ -57,7 +61,7 @@ public class MealsOfCategoryActivity extends AppCompatActivity implements OnFavo
         //Presenter
         allMealsPresenter = new AllMealsPresenterImpl(this , MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance() ,
                 MealLocalDataSourceImpl.getInstance(this)));
-        allMealsPresenter.getMeals();
+        allMealsPresenter.getCategoryMeals(categoryName);
         // Call getMeals with the retrieved categoryName
     }
 
@@ -101,32 +105,4 @@ public class MealsOfCategoryActivity extends AppCompatActivity implements OnFavo
     public void onClickMealForDetails(Meal meal) {
 
     }
-
-    @Override
-    public void onRandomSuccessfullResult(List<Meal> meals) {
-
-    }
-
-    @Override
-    public void onRandomFailure(String errMsg) {
-
-    }
-
-    @Override
-    public void onCategorySuccessfullResult(List<Category> categories) {
-
-    }
-
-    @Override
-    public void onAreaSuccessfullResult(List<Area> meals) {
-
-    }
-
-    @Override
-    public void onMealsAreaSuccessfullResult(List<Meal> meals) {
-
-    }
-//    public static String getCategoryName() {
-//        return categoryName;
-//    }
 }

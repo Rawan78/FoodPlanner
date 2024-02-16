@@ -2,7 +2,11 @@ package com.example.foodplanner;
 
 import com.example.foodplanner.model.*;
 
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Flowable;
+
 public interface FavouriteMealPresenter {
-    public void getMeals();
+    public Flowable<List<Meal>> getMeals();
     public void removeFromFav(Meal meal);
 }

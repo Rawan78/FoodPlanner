@@ -15,37 +15,43 @@
         android:theme="@style/Theme.FoodPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".SearchMealsByIngredientActivity"
+            android:name=".MealPlan.view.MealPlanActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchByAreaActivity"
+            android:name=".guest.HomeGuestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Search.SearchMealsByIngredientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Search.SearchByAreaActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SearchByCategoryActivity"
+            android:name=".Search.SearchByCategoryActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".Search.SearchActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MealsByAreaActivity"
+            android:name=".Area.MealsByAreaActivity"
             android:exported="false" />
         <activity
-            android:name=".FavouriteMealActivity"
+            android:name=".favMeals.view.FavouriteMealActivity"
             android:exported="false" />
         <activity
-            android:name=".MealDetailsActivity"
+            android:name=".Meals.view.MealDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".MealsOfCategoryActivity"
+            android:name=".Category.MealsOfCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".CategoriesActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".start.HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

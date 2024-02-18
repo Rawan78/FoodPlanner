@@ -12,6 +12,11 @@ public interface MealLocalDataSource {
     Completable insertMeal(Meal meal);
     Completable deleteMeal(Meal meal);
     Flowable<List<Meal>> getAllStoredMeals();
-//    Completable deleteAllMeals();
-//    Completable insertAllMeals(List<Meal> meals);
+    Completable deleteAllMeals();
+
+    //Plan
+    Completable insertMealToPlan(MealPlanObject mealPlanObject);
+    Completable deleteMealToPlan(MealPlanObject mealPlanObject);
+    Flowable<List<MealPlanObject>> getAllStoredMealsFromPlan();
+
 }

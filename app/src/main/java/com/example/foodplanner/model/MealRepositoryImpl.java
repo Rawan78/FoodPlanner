@@ -74,14 +74,25 @@ public class MealRepositoryImpl implements MealRepository{
         return mealRemoteDataSource.networkMethodForAreas();
     }
 
-//    @Override
-//    public Completable deleteAllMeals() {
-//        return mealLocalDataSource.deleteAllMeals();
-//    }
-//
-//    @Override
-//    public Completable insertAllMeals(List<Meal> meals) {
-//        return mealLocalDataSource.insertAllMeals(meals);
-//    }
+    @Override
+    public Completable deleteAllMeals() {
+        return mealLocalDataSource.deleteAllMeals();
+    }
+
+    @Override
+    public Completable insertMealToPlan(MealPlanObject mealPlanObject) {
+        return mealLocalDataSource.insertMealToPlan(mealPlanObject);
+    }
+
+    @Override
+    public Completable deleteMealFromPlan(MealPlanObject mealPlanObject) {
+        return mealLocalDataSource.deleteMealToPlan(mealPlanObject);
+    }
+
+    @Override
+    public Flowable<List<MealPlanObject>> getStoredMealsPlan() {
+        return mealLocalDataSource.getAllStoredMealsFromPlan();
+    }
+
 
 }

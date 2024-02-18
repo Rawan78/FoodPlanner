@@ -21,8 +21,14 @@ public interface MealRepository {
     public Observable<MealResponse> getMealsByIngredients (String ingredientName);
     public Observable<CategoryResponse> getAllCategories ();
     public Observable<AreaResponse> getAllAreas ();
+    Completable deleteAllMeals();
 
-//    Completable insertAllMealsFromFirebase(List<Meal> meals);
-//    Completable deleteAllMeals();
+
+    //For Plan
+    Completable insertMealToPlan(MealPlanObject mealPlanObject);
+
+    Completable deleteMealFromPlan(MealPlanObject mealPlanObject);
+
+    Flowable<List<MealPlanObject>> getStoredMealsPlan();
 
 }

@@ -59,7 +59,6 @@
 
         <TextView
             android:id="@+id/tv_strInstructions"
-            android:text="Instructions     :"
             android:textStyle="bold"
             android:textSize="20dp"
             android:layout_marginBottom="30dp"
@@ -68,128 +67,108 @@
 
         <TextView
             android:id="@+id/tv_strIngredient1"
-            android:text="Ingredient1  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient2"
-            android:text="Ingredient2  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient3"
-            android:text="Ingredient3  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient4"
-            android:text="Ingredient4  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient5"
-            android:text="Ingredient5  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient6"
-            android:text="Ingredient6  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient7"
-            android:text="Ingredient7  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient8"
-            android:text="Ingredient8  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient9"
-            android:text="Ingredient9  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient10"
-            android:text="Ingredient10  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient11"
-            android:text="Ingredient11  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient12"
-            android:text="Ingredient12  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient13"
-            android:text="Ingredient13  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient14"
-            android:text="Ingredient14  :  "
+
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient15"
-            android:text="Ingredient15  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient16"
-            android:text="Ingredient16  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient17"
-            android:text="Ingredient17  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient18"
-            android:text="Ingredient18  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient19"
-            android:text="Ingredient19  :  "
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strIngredient20"
-            android:text="Ingredient20  :  "
             android:textSize="20dp"
             android:layout_marginBottom="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_strYoutube"
-            android:text="Youtube"
             android:textSize="20dp"
             android:layout_marginBottom="50dp"
             android:layout_width="wrap_content"

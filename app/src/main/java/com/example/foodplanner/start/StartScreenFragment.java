@@ -91,8 +91,9 @@ public class StartScreenFragment extends Fragment {
         guestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), HomeGuestActivity.class);
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
+                Toast.makeText(getContext(), "You Entered As A Guest ", Toast.LENGTH_SHORT).show();
             }
         });
 

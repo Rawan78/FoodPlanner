@@ -117,8 +117,16 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener, 
 
     @Override
     public void onFavMealClick(Meal meal) {
-        addMeal(meal);
-        checkIfMealExistsInFavorites(meal);
+        if (isUserLoggedIn()) {
+            addMeal(meal);
+            checkIfMealExistsInFavorites(meal);
+        } else {
+            Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private boolean isUserLoggedIn() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        return currentUser != null;
     }
 
     @Override
@@ -217,4 +225,34 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener, 
                     });
         }
     }
+
+    private void showFavMealsFromFirebase(FirebaseUser user) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        user = currentUser;
+        if (user != null) {
+            String userId = user.getUid();
+
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("favorites");
+            favoritesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        Meal meal = dataSnapshot.getValue(Meal.class);
+                        allMealsPresenter.addToFav(meal);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+    }
+
 }

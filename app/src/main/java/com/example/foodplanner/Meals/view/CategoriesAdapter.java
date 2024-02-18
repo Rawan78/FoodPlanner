@@ -26,6 +26,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     Context context;
     List<Meal> meals;
     OnFavouriteClickListener listener ;
+     boolean isAGuest=false;
 
     public CategoriesAdapter(Context context, List<Meal> meals, OnFavouriteClickListener listener) {
         this.context = context;

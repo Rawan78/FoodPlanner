@@ -40,4 +40,16 @@ public class FavouriteMealPresenterImpl implements FavouriteMealPresenter {
                 });
     }
 
+    @Override
+    public void deleteAllMealsFromRoom() {
+        _repo.deleteAllMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    Log.i(TAG, "addToFav: Successfully Insert All ");
+                },error->{
+                    Log.i(TAG, "addToFav: Failed To Insert");
+                });
+    }
+
 }

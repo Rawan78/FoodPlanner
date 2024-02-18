@@ -10,6 +10,10 @@ import com.example.foodplanner.db.MealLocalDataSourceImpl;
 import com.example.foodplanner.model.*;
 import com.example.foodplanner.Meals.presenter.*;
 import com.example.foodplanner.network.MealRemoteDataSourceImpl;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -277,5 +281,29 @@ public class MealDetailsActivity extends AppCompatActivity implements OnMealPlan
     @Override
     public void addMealToPlan(MealPlanObject mealPlanObject) {
         allMealsPresenter.addToPlan(mealPlanObject);
+        addMealOfPlanToFirebase(mealPlanObject);
+    }
+    private void addMealOfPlanToFirebase(MealPlanObject mealPlanObject) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            String mealId = mealPlanObject.getIdMeal(); // Assuming getIdMeal() returns the mealId
+
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("plan")
+                    .child(mealId); // Use mealId as the key
+
+            favoritesRef.setValue(mealPlanObject)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Meal added to plan");
+                        //Toast.makeText(getContext(), "Added To Plan", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Error adding meal to plan", e);
+                        //Toast.makeText(getContext(), "Failed to add to Plan", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 }

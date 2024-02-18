@@ -13,7 +13,7 @@ public interface AllMealsPresenter {
     public void getCategories();
     public void getAreas();
 
-    void deleteAllMealsFromROOM();
+    void deleteAllMealPlanFromROOM();
 
     public void addToPlan(MealPlanObject mealPlanObject);
 

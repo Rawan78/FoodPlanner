@@ -18,5 +18,6 @@ public interface MealLocalDataSource {
     Completable insertMealToPlan(MealPlanObject mealPlanObject);
     Completable deleteMealToPlan(MealPlanObject mealPlanObject);
     Flowable<List<MealPlanObject>> getAllStoredMealsFromPlan();
+    Completable deleteAllMealsPlan();
 
 }

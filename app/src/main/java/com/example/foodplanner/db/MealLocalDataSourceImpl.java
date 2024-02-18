@@ -76,4 +76,9 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource{
         return mealPlanDAO.getAllMeals();
     }
 
+    @Override
+    public Completable deleteAllMealsPlan() {
+        return mealPlanDAO.deleteAllMealsFromROOM();
+    }
+
 }

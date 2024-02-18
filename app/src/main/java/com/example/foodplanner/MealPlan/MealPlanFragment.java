@@ -28,6 +28,11 @@ import com.example.foodplanner.model.MealPlanObject;
 import com.example.foodplanner.MealPlan.presenter.*;
 import com.example.foodplanner.model.MealRepositoryImpl;
 import com.example.foodplanner.network.MealRemoteDataSourceImpl;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,15 +194,40 @@ public class MealPlanFragment extends Fragment implements MealPlanView, OnMealPl
     @Override
     public void removeMeal(MealPlanObject mealPlanObject) {
         mealPlanPresenter.removeFromPlan(mealPlanObject);
+        removeMealPlanFromFirebase(mealPlanObject);
     }
 
     @Override
     public void onMealPlanClick(MealPlanObject mealPlanObject) {
         removeMeal(mealPlanObject);
+
     }
 
     @Override
     public void onClickMealForDetails(MealPlanObject mealPlanObject) {
 
+    }
+
+    public void removeMealPlanFromFirebase(MealPlanObject mealPlanObject){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+
+            FirebaseDatabase.getInstance().getReference("users")
+                    .child(userId)
+                    .child("plan")
+                    .child(mealPlanObject.getIdMeal())
+                    .removeValue()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Meal removed from Firebase successfully");
+                            } else {
+                                Log.e(TAG, "Failed to remove meal from Firebase: " + task.getException().getMessage());
+                            }
+                        }
+                    });
+        }
     }
 }

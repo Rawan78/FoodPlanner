@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.foodplanner.MealPlan.presenter.*;
+
 import com.example.foodplanner.MainActivity;
 import com.example.foodplanner.MealPlan.MealPlanFragment;
 import com.example.foodplanner.Meals.presenter.AllMealsPresenter;
@@ -51,6 +53,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener , AllMealsView , FavMealsView {
     AllMealsPresenter allMealsPresenter;
+    MealPlanPresenter mealPlanPresenter;
     FavouriteMealPresenter favouriteMealPresenter;
     public static boolean isNotUserByEmail = false ;
     public static boolean isNotGoogleAccount = false;
@@ -79,6 +82,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         favouriteMealPresenter = new FavouriteMealPresenterImpl(this,
                 MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance() ,
                         MealLocalDataSourceImpl.getInstance(this)));
+
+//        mealPlanPresenter = new MealPlanPresenterImpl(this,
+//                MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance() ,
+//                        MealLocalDataSourceImpl.getInstance(this)));
 
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
@@ -114,6 +121,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
                     deleteFavMealsFromRoom();
 
+                    deleteMealsPlanFromRoom();
+
                     FirebaseAuth.getInstance().signOut();
                     sharedPreferences.edit().clear().apply();
                     Toast.makeText(HomeActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
@@ -140,6 +149,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             showFavMealsFromFirebase(user);
+            showMealsPlanFromFirebase(user);
             // If user is logged in, set the user's name in the navigation drawer header
             String userEmail = user.getEmail();
             if (userEmail != null) {
@@ -268,6 +278,62 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                     for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                         Meal meal = dataSnapshot.getValue(Meal.class);
                         favouriteMealPresenter.deleteAllMealsFromRoom();
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+    }
+    private void showMealsPlanFromFirebase(FirebaseUser user) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        user = currentUser;
+        if (user != null) {
+            String userId = user.getUid();
+
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("plan");
+            favoritesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        MealPlanObject mealPlanObject = dataSnapshot.getValue(MealPlanObject.class);
+                        allMealsPresenter.addToPlan(mealPlanObject);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+    }
+
+    private void deleteMealsPlanFromRoom() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(userId)
+                    .child("plan");
+            favoritesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        MealPlanObject mealPlanObject = dataSnapshot.getValue(MealPlanObject.class);
+                        allMealsPresenter.deleteAllMealPlanFromROOM();
                     }
 
                 }

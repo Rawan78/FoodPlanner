@@ -30,5 +30,6 @@ public interface MealRepository {
     Completable deleteMealFromPlan(MealPlanObject mealPlanObject);
 
     Flowable<List<MealPlanObject>> getStoredMealsPlan();
+    Completable deleteAllMealsPlan();
 
 }

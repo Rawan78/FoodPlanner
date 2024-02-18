@@ -203,8 +203,15 @@ public class AllMealsPresenterImpl implements AllMealsPresenter {
 
 
     @Override
-    public void deleteAllMealsFromROOM() {
-
+    public void deleteAllMealPlanFromROOM() {
+        _repo.deleteAllMealsPlan()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{
+                    Log.i(TAG, "addToPlan: Successfully Insert All ");
+                },error->{
+                    Log.i(TAG, "addToPlan: Failed To Insert");
+                });
     }
 
     @Override

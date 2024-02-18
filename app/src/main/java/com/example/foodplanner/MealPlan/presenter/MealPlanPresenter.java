@@ -12,5 +12,6 @@ public interface MealPlanPresenter {
     public void removeFromPlan(MealPlanObject mealPlanObject);
 
     //public void insertToPlan(MealPlanObject mealPlanObject);
+    void deleteAllMealsPlanFromRoom();
 
 }

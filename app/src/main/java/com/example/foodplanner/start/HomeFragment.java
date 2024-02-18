@@ -117,12 +117,12 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener, 
 
     @Override
     public void onFavMealClick(Meal meal) {
-        if (isUserLoggedIn()) {
+       // if (isUserLoggedIn()) {
             addMeal(meal);
             checkIfMealExistsInFavorites(meal);
-        } else {
-            Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
-        }
+        //} else {
+         //   Toast.makeText(getContext(), "Please login to add to favorites", Toast.LENGTH_SHORT).show();
+        //}
     }
     private boolean isUserLoggedIn() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -254,5 +254,29 @@ public class HomeFragment extends Fragment implements OnFavouriteClickListener, 
 
         }
     }
+
+//    private void addMealOfPlanToFirebase(MealPlanObject mealPlanObject) {
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (currentUser != null) {
+//            String userId = currentUser.getUid();
+//            String mealId = mealPlanObject.getIdMeal(); // Assuming getIdMeal() returns the mealId
+//
+//            DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference()
+//                    .child("users")
+//                    .child(userId)
+//                    .child("plan")
+//                    .child(mealId); // Use mealId as the key
+//
+//            favoritesRef.setValue(mealPlanObject)
+//                    .addOnSuccessListener(aVoid -> {
+//                        Log.d(TAG, "Meal added to plan");
+//                        //Toast.makeText(getContext(), "Added To Plan", Toast.LENGTH_SHORT).show();
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        Log.e(TAG, "Error adding meal to plan", e);
+//                        //Toast.makeText(getContext(), "Failed to add to Plan", Toast.LENGTH_SHORT).show();
+//                    });
+//        }
+//    }
 
 }

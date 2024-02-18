@@ -94,5 +94,10 @@ public class MealRepositoryImpl implements MealRepository{
         return mealLocalDataSource.getAllStoredMealsFromPlan();
     }
 
+    @Override
+    public Completable deleteAllMealsPlan() {
+        return mealLocalDataSource.deleteAllMealsPlan();
+    }
+
 
 }

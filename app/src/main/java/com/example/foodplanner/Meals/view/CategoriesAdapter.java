@@ -1,5 +1,7 @@
 package com.example.foodplanner.Meals.view;
 
+import com.example.foodplanner.start.*;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -61,17 +63,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             @Override
             public void onClick(View v) {
                 // Toggle between two icons
-                listener.onFavMealClick(current);
-                //if (holder.addToFavIcon.getTag() != null && holder.addToFavIcon.getTag().equals("favorite")) {
+                if(StartScreenFragment.isGuest == true){
+                    Toast.makeText(context, "Sorry, You Cannot add to favourite \n If you want, You must Login First", Toast.LENGTH_SHORT).show();
+                }else {
+                    listener.onFavMealClick(current);
                     holder.addToFavIcon.setImageResource(R.drawable.redhearticon);
                     holder.addToFavIcon.setTag("not_favorite");
-                    // Handle removing from favorites here
-               // } else {
-                //    holder.addToFavIcon.setImageResource(R.drawable.addtofavicon);
-                //    holder.addToFavIcon.setTag("favorite");
-                    // Handle adding to favorites here
-                //}
-                Toast.makeText(context, "Added To Favourite", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Added To Favourite", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         holder.cardMeal.setOnClickListener(new View.OnClickListener() {

@@ -162,7 +162,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         } else {
             // Handle case where user is not signed in
             Log.e(TAG, "User is not signed in");
-            isNotUserByEmail = true;
         }
         if(account != null){
             String personNameOfGoogle = account.getDisplayName();
@@ -176,7 +175,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 Log.e(TAG, "Google account email is null");
             }
         }else {
-            isNotGoogleAccount = true;
         }
 
         if(user==null && account==null){
@@ -208,19 +206,19 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                     .commit();
             return true;
         } else if (item.getItemId() == R.id.mealPlan) {
-           // if (isNotUserByEmail && isNotGoogleAccount) { // Check if the user is not a guest
+            if (StartScreenFragment.isGuest==true) { // Check if the user is not a guest
 
                 // Show a toast message indicating that guests cannot access th
-               // Toast.makeText(this, "You cannot access Meal Plan \n If You want to access it , Please Login", Toast.LENGTH_SHORT).show();
-               // return false;
+                Toast.makeText(this, "You cannot access Meal Plan \n If You want to access it , Please Login", Toast.LENGTH_SHORT).show();
+                return false;
 
-           // } else {
+            } else {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.flFragment, mealPlanFragment)
                         .commit();
                 return true;
-           // }
+            }
         }
         return true;
     }

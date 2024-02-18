@@ -35,6 +35,7 @@ public class StartScreenFragment extends Fragment {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     Button guestBtn;
+    public static boolean isGuest = false;
 
     public StartScreenFragment() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class StartScreenFragment extends Fragment {
                         .replace(R.id.nav_host_fragment, new SignUpFragment())
                         .addToBackStack(null)
                         .commit();
+                isGuest = false;
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +88,8 @@ public class StartScreenFragment extends Fragment {
                         .replace(R.id.nav_host_fragment, new LoginFragment())
                         .addToBackStack(null)
                         .commit();
+
+                        isGuest = false;
             }
         });
         guestBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +98,7 @@ public class StartScreenFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
                 Toast.makeText(getContext(), "You Entered As A Guest ", Toast.LENGTH_SHORT).show();
+                isGuest = true;
             }
         });
 

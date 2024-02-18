@@ -10,6 +10,7 @@ import com.example.foodplanner.db.MealLocalDataSourceImpl;
 import com.example.foodplanner.model.*;
 import com.example.foodplanner.Meals.presenter.*;
 import com.example.foodplanner.network.MealRemoteDataSourceImpl;
+import com.example.foodplanner.start.StartScreenFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -115,8 +116,11 @@ public class MealDetailsActivity extends AppCompatActivity implements OnMealPlan
         addToPlan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // showDayChooserDialog();
-                showDayChooserDialog(randomMeal);
+                if(StartScreenFragment.isGuest == true)   {
+                    Toast.makeText(MealDetailsActivity.this, "Sorry, You Cannot add to plan \n If you want, You must Login First", Toast.LENGTH_SHORT).show();
+                }else {
+                    showDayChooserDialog(randomMeal);
+                }
             }
         });
     }

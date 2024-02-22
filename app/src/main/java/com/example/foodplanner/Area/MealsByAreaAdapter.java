@@ -19,6 +19,7 @@ import com.example.foodplanner.Meals.view.MealDetailsActivity;
 import com.example.foodplanner.Meals.view.OnFavouriteClickListener;
 import com.example.foodplanner.R;
 import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.start.StartScreenFragment;
 
 import java.util.List;
 
@@ -60,11 +61,15 @@ public class MealsByAreaAdapter extends RecyclerView.Adapter<MealsByAreaAdapter.
             @Override
             public void onClick(View v) {
                 // Toggle between two icons
-                listener.onFavMealClick(current);
-                holder.addToFavIcon.setImageResource(R.drawable.redhearticon);
-                holder.addToFavIcon.setTag("not_favorite");
+                if(StartScreenFragment.isGuest == true){
+                    Toast.makeText(context, "Sorry, You Cannot add to favourite \n If you want, You must Login First", Toast.LENGTH_SHORT).show();
+                }else {
+                    listener.onFavMealClick(current);
+                    holder.addToFavIcon.setImageResource(R.drawable.redhearticon);
+                    holder.addToFavIcon.setTag("not_favorite");
 
-                Toast.makeText(context, "Added To Favourite", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Added To Favourite", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         holder.cardMeal.setOnClickListener(new View.OnClickListener() {

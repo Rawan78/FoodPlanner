@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MealDetailsActivity extends AppCompatActivity implements OnMealPlanClickListener , AllMealsView{
     AllMealsPresenter allMealsPresenter;
@@ -60,7 +64,7 @@ public class MealDetailsActivity extends AppCompatActivity implements OnMealPlan
     TextView mealIngredient18;
     TextView mealIngredient19;
     TextView mealIngredient20;
-    TextView mealYoutube;
+    WebView mealYoutube;
 
 
     @Override
@@ -136,88 +140,89 @@ public class MealDetailsActivity extends AppCompatActivity implements OnMealPlan
         }
 
         if(meal.getStrIngredient1() != null) {
-            mealIngredient1.setText("Ingredient1    :" + meal.getStrIngredient1());
+            mealIngredient1.setText(meal.getStrIngredient1() +"     " + meal.getStrMeasure1());
         }
 
         if(meal.getStrIngredient2() != null) {
-            mealIngredient2.setText("Ingredient2    :" + meal.getStrIngredient2());
+            mealIngredient2.setText(meal.getStrIngredient2()  +"     " + meal.getStrMeasure2());
         }
 
         if(meal.getStrIngredient3() != null) {
-            mealIngredient3.setText("Ingredient3    :" + meal.getStrIngredient3());
+            mealIngredient3.setText( meal.getStrIngredient3() +"     " + meal.getStrMeasure3());
         }
 
         if(meal.getStrIngredient4() != null) {
-            mealIngredient4.setText("Ingredient4    :" + meal.getStrIngredient4());
+            mealIngredient4.setText(meal.getStrIngredient4() +"     " + meal.getStrMeasure4());
         }
 
         if(meal.getStrIngredient5() != null) {
-            mealIngredient5.setText("Ingredient5    :" + meal.getStrIngredient5());
+            mealIngredient5.setText(meal.getStrIngredient5()  +"     " + meal.getStrMeasure5());
         }
 
         if(meal.getStrIngredient6() != null) {
-            mealIngredient6.setText("Ingredient6    :" + meal.getStrIngredient6());
+            mealIngredient6.setText(meal.getStrIngredient6()  +"     " + meal.getStrMeasure6());
         }
 
         if(meal.getStrIngredient7() != null) {
-            mealIngredient7.setText("Ingredient7    :" + meal.getStrIngredient7());
+            mealIngredient7.setText(meal.getStrIngredient7() +"     " + meal.getStrMeasure7());
         }
 
         if(meal.getStrIngredient8() != null) {
-            mealIngredient8.setText("Ingredient8    :" + meal.getStrIngredient8());
+            mealIngredient8.setText(meal.getStrIngredient8() +"     " + meal.getStrMeasure8());
         }
 
         if(meal.getStrIngredient9() != null) {
-            mealIngredient9.setText("Ingredient9    :" + meal.getStrIngredient9());
+            mealIngredient9.setText(meal.getStrIngredient9() +"     " + meal.getStrMeasure9());
         }
 
         if(meal.getStrIngredient10() != null) {
-            mealIngredient10.setText("Ingredient10    :" + meal.getStrIngredient10());
+            mealIngredient10.setText( meal.getStrIngredient10() +"     " + meal.getStrMeasure10());
         }
 
         if(meal.getStrIngredient11() != null) {
-            mealIngredient11.setText("Ingredient11    :" + meal.getStrIngredient11());
+            mealIngredient11.setText(meal.getStrIngredient11() +"     " + meal.getStrMeasure11());
         }
 
         if(meal.getStrIngredient12() != null) {
-            mealIngredient12.setText("Ingredient12    :" + meal.getStrIngredient12());
+            mealIngredient12.setText( meal.getStrIngredient12() +"     " + meal.getStrMeasure12());
         }
 
         if(meal.getStrIngredient13() != null) {
-            mealIngredient13.setText("Ingredient13    :" + meal.getStrIngredient13());
+            mealIngredient13.setText( meal.getStrIngredient13() +"     " + meal.getStrMeasure13());
         }
 
         if(meal.getStrIngredient14() != null) {
-            mealIngredient14.setText("Ingredient14    :" + meal.getStrIngredient14());
+            mealIngredient14.setText(meal.getStrIngredient14() +"     " + meal.getStrMeasure14());
         }
 
         if(meal.getStrIngredient15() != null) {
-            mealIngredient15.setText("Ingredient15    :" + meal.getStrIngredient15());
+            mealIngredient15.setText(meal.getStrIngredient15() +"     " + meal.getStrMeasure15());
         }
 
         if(meal.getStrIngredient16() != null) {
-            mealIngredient16.setText("Ingredient16    :" + meal.getStrIngredient16());
+            mealIngredient16.setText( meal.getStrIngredient16() +"     " + meal.getStrMeasure16());
         }
 
         if(meal.getStrIngredient17() != null) {
-            mealIngredient17.setText("Ingredient17    :" + meal.getStrIngredient17());
+            mealIngredient17.setText( meal.getStrIngredient17() +"     " + meal.getStrMeasure17());
         }
 
         if(meal.getStrIngredient18() != null) {
-            mealIngredient18.setText("Ingredient18    :" + meal.getStrIngredient18());
+            mealIngredient18.setText( meal.getStrIngredient18() +"     " + meal.getStrMeasure18());
         }
 
         if(meal.getStrIngredient19() != null) {
-            mealIngredient19.setText("Ingredient19    :" + meal.getStrIngredient19());
+            mealIngredient19.setText( meal.getStrIngredient19() +"     " + meal.getStrMeasure19());
         }
 
         if(meal.getStrIngredient20() != null) {
-            mealIngredient20.setText("Ingredient20    :" + meal.getStrIngredient20());
+            mealIngredient20.setText( meal.getStrIngredient20() +"     " + meal.getStrMeasure20());
         }
 
         if(meal.getStrYoutube() != null) {
-            mealYoutube.setText("Youtube    \n" + meal.getStrYoutube());
+        setMealVideo(meal.getStrYoutube());
         }
+
     }
 
     // Method to show the day chooser dialog
@@ -302,12 +307,52 @@ public class MealDetailsActivity extends AppCompatActivity implements OnMealPlan
             favoritesRef.setValue(mealPlanObject)
                     .addOnSuccessListener(aVoid -> {
                         Log.d(TAG, "Meal added to plan");
-                        //Toast.makeText(getContext(), "Added To Plan", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
                         Log.e(TAG, "Error adding meal to plan", e);
-                        //Toast.makeText(getContext(), "Failed to add to Plan", Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+
+    public static String convertToEmbeddedUrl(String youtubeUrl) {
+        String videoId = extractVideoId(youtubeUrl);
+        return "https://www.youtube.com/embed/" + videoId;
+    }
+
+    private static String extractVideoId(String youtubeUrl) {
+        String videoId = null;
+        String regex = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%2Fvideos%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            videoId = matcher.group();
+        }
+
+        return videoId;
+    }
+    public void setMealVideo(String url)
+    {
+        Log.d("TAG", "setMealVideo: width " +mealYoutube.getX());
+        String videoUrl = convertToEmbeddedUrl(url);
+        String video="<iframe width='400' height=\"200\" src= '"+videoUrl+"' title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+        mealYoutube.getSettings().setJavaScriptEnabled(true);
+        mealYoutube.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                adjustIframeWidth(view);
+            }
+        });
+        mealYoutube.loadData(video, " text/html", "utf-8");
+
+    }
+    private void adjustIframeWidth(WebView webView) {
+        webView.evaluateJavascript("javascript:(function() { " +
+                "var iframes = document.getElementsByTagName('iframe');" +
+                "for (var i = 0; i < iframes.length; i++) {" +
+                "    var iframe = iframes[i];" +
+                "    iframe.style.width = '100%';" +
+                "}})();", null);
     }
 }

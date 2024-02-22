@@ -66,6 +66,14 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/tv_strIngredients"
+            android:textSize="20dp"
+            android:text="Ingrediants"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:id="@+id/tv_strIngredient1"
             android:textSize="20dp"
             android:layout_width="wrap_content"
@@ -167,12 +175,16 @@
             android:layout_marginBottom="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/tv_strYoutube"
-            android:textSize="20dp"
-            android:layout_marginBottom="50dp"
+
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
+            <WebView
+                android:id="@+id/tv_strYoutube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp" />
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addToPlanBtn"

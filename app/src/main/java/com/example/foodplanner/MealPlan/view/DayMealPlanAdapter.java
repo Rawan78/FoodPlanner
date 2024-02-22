@@ -58,7 +58,7 @@ public class DayMealPlanAdapter extends RecyclerView.Adapter<DayMealPlanAdapter.
     public DayMealPlanAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "onCreateViewHolder: ");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_meal, parent, false);
+        View view = inflater.inflate(R.layout.item_meal_plan, parent, false);
         DayMealPlanAdapter.ViewHolder viewHolder = new DayMealPlanAdapter.ViewHolder(view);
         return viewHolder;
     }
@@ -69,15 +69,15 @@ public class DayMealPlanAdapter extends RecyclerView.Adapter<DayMealPlanAdapter.
         holder.mealName.setText(currentMeal.getStrMeal());
         Glide.with(context).load(currentMeal.getStrMealThumb()).into(holder.mealPhoto);
 
-        holder.cardMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mealPlanClickListener != null) {
-                    mealPlanClickListener.onMealPlanClick(currentMeal);
-                }
-            }
-        });
-        holder.mealName.setOnClickListener(new View.OnClickListener() {
+//        holder.cardMeal.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mealPlanClickListener != null) {
+//                    mealPlanClickListener.onMealPlanClick(currentMeal);
+//                }
+//            }
+//        });
+        holder.removeFromPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mealPlanClickListener.onMealPlanClick(currentMeal);
@@ -101,7 +101,7 @@ public class DayMealPlanAdapter extends RecyclerView.Adapter<DayMealPlanAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mealPhoto;
         TextView mealName;
-        ImageView addToFavIcon;
+        ImageView removeFromPlan;
         public CardView cardMeal;
         public View layout;
 
@@ -111,7 +111,7 @@ public class DayMealPlanAdapter extends RecyclerView.Adapter<DayMealPlanAdapter.
             mealPhoto = v.findViewById(R.id.iv_mealPhoto);
             mealName = v.findViewById(R.id.tv_mealName);
             cardMeal = v.findViewById(R.id.card_meal);
-            addToFavIcon = v.findViewById(R.id.iv_addToFavourite);
+            removeFromPlan = v.findViewById(R.id.iv_deleteFromPlan);
         }
     }
 }

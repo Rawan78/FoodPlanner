@@ -3,8 +3,6 @@ package com.example.foodplanner.start;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.foodplanner.guest.*;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -19,7 +17,6 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 import com.example.foodplanner.authentication.LoginFragment;
 import com.example.foodplanner.authentication.SignUpFragment;
-import com.example.foodplanner.start.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,7 +25,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 public class StartScreenFragment extends Fragment {
-    //NavController navController;
     Button btnSignUp;
     TextView btnLogin;
     ImageView googleBtn;
